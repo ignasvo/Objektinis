@@ -10,4 +10,7 @@ struct Student {
     int egzaminas;
 };
 
+double skaiciuotiVidurki(const std::vector<int>& pazymiai);
+double skaiciuotiMediana(std::vector<int> pazymiai);
+
 #endif
