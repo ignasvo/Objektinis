@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "studentai.h"
 
 int main() {
@@ -21,6 +22,17 @@ int main() {
     std::cout << "Iveskite egzamino rezultata: ";
     std::cin >> studentas.egzaminas;
 
-    std::cout << "Duomenys sekmingai ivesti!\n";
+    double vidurkis = skaiciuotiVidurki(studentas.namuDarbai);
+    double mediana = skaiciuotiMediana(studentas.namuDarbai);
+
+    double galutinisVid = 0.4 * vidurkis + 0.6 * studentas.egzaminas;
+    double galutinisMed = 0.4 * mediana + 0.6 * studentas.egzaminas;
+
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "---------------------------------------------\n";
+    std::cout << "Pavarde    Vardas    Galutinis (Vid.) / Galutinis (Med.)\n";
+    std::cout << "---------------------------------------------\n";
+    std::cout << studentas.pavarde << " " << studentas.vardas << " " << galutinisVid << " / " << galutinisMed << "\n";
+
     return 0;
 }
