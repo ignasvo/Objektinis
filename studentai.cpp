@@ -1,6 +1,7 @@
 #include "studentai.h"
 
 double skaiciuotiVidurki(const std::vector<int>& pazymiai) {
+    if (pazymiai.empty()) return 0;
     double suma = 0;
     for (int paz : pazymiai) {
         suma += paz;
@@ -9,6 +10,7 @@ double skaiciuotiVidurki(const std::vector<int>& pazymiai) {
 }
 
 double skaiciuotiMediana(std::vector<int> pazymiai) {
+    if (pazymiai.empty()) return 0;
     std::sort(pazymiai.begin(), pazymiai.end());
     size_t dydis = pazymiai.size();
     if (dydis % 2 == 0) {

@@ -1,16 +1,18 @@
 #ifndef STUDENTAI_H
 #define STUDENTAI_H
 
-#include <vector>
-#include <string>
-#include <algorithm>
 #include <iostream>
+#include <vector>
+#include <algorithm>
 #include <iomanip>
+#include <string>
 
 struct Student {
-    std::string vardas, pavarde;
+    std::string vardas;
+    std::string pavarde;
     std::vector<int> namuDarbai;
     int egzaminas;
+    double galutinisBalas;
 };
 
 double skaiciuotiVidurki(const std::vector<int>& pazymiai);
