@@ -1,5 +1,4 @@
 #include "studentai.h"
-#include <algorithm>
 
 double skaiciuotiVidurki(const std::vector<int>& pazymiai) {
     double suma = 0;

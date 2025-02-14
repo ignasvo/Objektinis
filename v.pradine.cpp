@@ -1,10 +1,9 @@
-#include <iostream>
-#include <iomanip>
 #include "studentai.h"
 
 int main() {
     Student studentas;
     int ndSk;
+    char pasirinkimas;
 
     std::cout << "Iveskite studento varda ir pavarde: ";
     std::cin >> studentas.vardas >> studentas.pavarde;
@@ -22,17 +21,23 @@ int main() {
     std::cout << "Iveskite egzamino rezultata: ";
     std::cin >> studentas.egzaminas;
 
-    double vidurkis = skaiciuotiVidurki(studentas.namuDarbai);
-    double mediana = skaiciuotiMediana(studentas.namuDarbai);
+    std::cout << "Pasirinkite skaiciavimo metoda (V - vidurkis, M - mediana): ";
+    std::cin >> pasirinkimas;
 
-    double galutinisVid = 0.4 * vidurkis + 0.6 * studentas.egzaminas;
-    double galutinisMed = 0.4 * mediana + 0.6 * studentas.egzaminas;
+    double galutinisBalas;
+    if (pasirinkimas == 'V' || pasirinkimas == 'v') {
+        double vidurkis = skaiciuotiVidurki(studentas.namuDarbai);
+        galutinisBalas = 0.4 * vidurkis + 0.6 * studentas.egzaminas;
+    } else {
+        double mediana = skaiciuotiMediana(studentas.namuDarbai);
+        galutinisBalas = 0.4 * mediana + 0.6 * studentas.egzaminas;
+    }
 
     std::cout << std::fixed << std::setprecision(2);
     std::cout << "---------------------------------------------\n";
-    std::cout << "Pavarde    Vardas    Galutinis (Vid.) / Galutinis (Med.)\n";
+    std::cout << "Pavarde    Vardas    Galutinis balas\n";
     std::cout << "---------------------------------------------\n";
-    std::cout << studentas.pavarde << " " << studentas.vardas << " " << galutinisVid << " / " << galutinisMed << "\n";
+    std::cout << studentas.pavarde << " " << studentas.vardas << " " << galutinisBalas << "\n";
 
     return 0;
 }

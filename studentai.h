@@ -3,6 +3,9 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <iostream>
+#include <iomanip>
 
 struct Student {
     std::string vardas, pavarde;
