@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <string>
+#include <numeric>
 
 struct Student {
     std::string vardas;
