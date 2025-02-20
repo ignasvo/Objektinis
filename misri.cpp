@@ -1,6 +1,10 @@
 #include "misri.h"
 
 void ivestiStudentus(std::vector<Student>& studentai) {
+    char pasirinkimas;
+    std::cout << "Pasirinkite skaiciavimo metoda studentams (V - vidurkis, M - mediana): ";
+    std::cin >> pasirinkimas;
+    
     char testi;
 
     do {
@@ -21,10 +25,6 @@ void ivestiStudentus(std::vector<Student>& studentai) {
         std::cout << "Iveskite egzamino rezultata: ";
         std::cin >> studentas.egzaminas;
 
-        char pasirinkimas;
-        std::cout << "Pasirinkite skaiciavimo metoda (V - vidurkis, M - mediana): ";
-        std::cin >> pasirinkimas;
-
         if (pasirinkimas == 'V' || pasirinkimas == 'v') {
             studentas.galutinisBalas = 0.4 * skaiciuotiVidurki(studentas.namuDarbai, studentas.pazKiekis) + 0.6 * studentas.egzaminas;
         } else {
@@ -39,7 +39,7 @@ void ivestiStudentus(std::vector<Student>& studentai) {
 }
 
 double skaiciuotiVidurki(const int paz[], int kiekis) {
-    if (kiekis == 0) return 0.0;
+    if (kiekis == 0) return 0.0; //Išvengti dalybos iš nulio	
     int suma = 0;
     for (int i = 0; i < kiekis; i++) suma += paz[i];
     return (double)suma / kiekis;
@@ -56,6 +56,7 @@ double skaiciuotiMediana(int paz[], int kiekis) {
 }
 
 void spausdintiRezultatus(const std::vector<Student>& studentai) {
+    std::cout << std::fixed << std::setprecision(2);
     std::cout << "---------------------------------------------\n";
     std::cout << "Vardas     Pavarde     Galutinis balas\n";
     std::cout << "---------------------------------------------\n";

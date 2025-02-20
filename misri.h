@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <iomanip>
 
 const int MAX_PAZ = 100;
 
