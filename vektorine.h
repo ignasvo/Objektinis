@@ -20,7 +20,7 @@ struct Student {
 double skaiciuotiVidurki(const std::vector<int>& paz);
 double skaiciuotiMediana(std::vector<int> paz);
 void spausdintiRezultatus(const std::vector<Student>& studentai);
-void generuotiPazymius(Student& studentas, int kiek);
+void generuotiStudentus(std::vector<Student>& studentai, int kiek, int ndSk);
 void vykdytiPrograma();
 
 #endif

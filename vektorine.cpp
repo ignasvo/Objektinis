@@ -1,12 +1,24 @@
 #include "vektorine.h"
 
-void generuotiPazymius(Student& studentas, int kiek) {
-    studentas.namuDarbai.clear();
+std::vector<std::string> vardai = {"Jonas", "Petras", "Marius", "Tomas", "Lukas", "Paulius", "Mantas", "Kazys", "Antanas", "Darius"};
+std::vector<std::string> pavardes = {"Kazlauskas", "Petraitis", "Jankauskas", "Jonaitis", "Brazinskas", "Stankevicius", "Kavaliauskas", "Zukauskas", "Kavolis"};
+
+void generuotiStudentus(std::vector<Student>& studentai, int kiek, int ndSk) {
     for (int i = 0; i < kiek; ++i) {
-        studentas.namuDarbai.push_back(rand() % 10 + 1);
+        Student studentas;
+        studentas.vardas = vardai[rand() % vardai.size()];
+        studentas.pavarde = pavardes[rand() % pavardes.size()];
+
+        studentas.namuDarbai.resize(ndSk);
+        for (int j = 0; j < ndSk; ++j) {
+            studentas.namuDarbai[j] = rand() % 10 + 1;
+        }
+
+        studentas.egzaminas = rand() % 10 + 1;
+        studentai.push_back(studentas);
     }
-    studentas.egzaminas = rand() % 10 + 1;
 }
+
 
 double skaiciuotiVidurki(const std::vector<int>& paz) {
     if (paz.empty()) return 0.0; //Išvengti dalybos iš nulio
@@ -44,13 +56,14 @@ void vykdytiPrograma() {
     srand(time(0));
 
     char metodas;
-    std::cout << "Pasirinkite skaiciavimo metoda (V - vidurkis, M - mediana): ";
+    std::cout << "Pasirinkite skaiciavimo metoda visiems studentams (V - vidurkis, M - mediana): ";
     std::cin >> metodas;
 
     while (true) {
         std::cout << "Pasirinkite veiksma:\n";
         std::cout << "1 - Ivesti ranka\n";
         std::cout << "2 - Generuoti pazymius\n";
+        std::cout << "3 - Generuoti studentus ir pazymius\n";
         std::cout << "4 - Baigti\n";
         std::cout << "Jusu pasirinkimas: ";
         
@@ -63,29 +76,55 @@ void vykdytiPrograma() {
         }
         
         Student studentas;
-        std::cout << "Iveskite studento varda ir pavarde: ";
-        std::cin >> studentas.vardas >> studentas.pavarde;
         
         if (pasirinkimas == 1) {
+            std::cout << "Iveskite studenta (vardas pavarde): ";
+            std::cin >> studentas.vardas >> studentas.pavarde;
+
             int ndSk;
             std::cout << "Iveskite namu darbu skaiciu: ";
             std::cin >> ndSk;
             std::cout << "Iveskite namu darbu rezultatus: ";
             for (int i = 0; i < ndSk; ++i) {
-                int paz;
-                std::cin >> paz;
-                studentas.namuDarbai.push_back(paz);
+                int pazymys;
+                std::cin >> pazymys;
+                studentas.namuDarbai.push_back(pazymys);
             }
             std::cout << "Iveskite egzamino rezultata: ";
             std::cin >> studentas.egzaminas;
         } 
         else if (pasirinkimas == 2) {
-            int kiek;
+            std::cout << "Iveskite studenta (vardas pavarde): ";
+            std::cin >> studentas.vardas >> studentas.pavarde;
+
+            int ndSk;
             std::cout << "Kiek pazymiu generuoti? ";
-            std::cin >> kiek;
-            generuotiPazymius(studentas, kiek);
+            std::cin >> ndSk;
+            for (int i = 0; i < ndSk; ++i) {
+                studentas.namuDarbai.push_back(rand() % 10 + 1);
+            }
+            studentas.egzaminas = rand() % 10 + 1;
+            std::cout << "Sugeneruoti namu darbu pazymiai ir egzaminas.\n";
+        } 
+        else if (pasirinkimas == 3) {
+            int kiekStudentu, ndSk;
+            std::cout << "Kiek studentu generuoti? ";
+            std::cin >> kiekStudentu;
+            std::cout << "Kiek namu darbu kiekvienam? ";
+            std::cin >> ndSk;
+
+            generuotiStudentus(studentai, kiekStudentu, ndSk);
+            std::cout << kiekStudentu << "Studentai sugeneruoti.\n";
+            for (auto& studentas : studentai) {
+                if (metodas == 'V' || metodas == 'v') {
+                    studentas.galutinisBalas = 0.4 * skaiciuotiVidurki(studentas.namuDarbai) + 0.6 * studentas.egzaminas;
+                } else {
+                    studentas.galutinisBalas = 0.4 * skaiciuotiMediana(studentas.namuDarbai) + 0.6 * studentas.egzaminas;
+                }
+            }
+            continue;
         }
-        
+
         if (metodas == 'V' || metodas == 'v') {
             studentas.galutinisBalas = 0.4 * skaiciuotiVidurki(studentas.namuDarbai) + 0.6 * studentas.egzaminas;
         } else {
