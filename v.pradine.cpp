@@ -46,11 +46,11 @@ int main() {
 
     std::cout << std::fixed << std::setprecision(2);
     std::cout << "---------------------------------------------\n";
-    std::cout << "Pavarde    Vardas    Galutinis balas\n";
+    std::cout << "Vardas    Pavarde    Galutinis balas\n";
     std::cout << "---------------------------------------------\n";
 
     for (const auto& studentas : studentai) {
-        std::cout << studentas.pavarde << " " << studentas.vardas << " " << studentas.galutinisBalas << "\n";
+        std::cout << studentas.vardas << "         " << studentas.pavarde << "         " << studentas.galutinisBalas << "\n";
     }
 
     return 0;
