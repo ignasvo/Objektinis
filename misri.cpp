@@ -5,7 +5,7 @@ void ivestiStudentus(std::vector<Student>& studentai) {
 
     do {
         Student studentas;
-        studentas.pazKiekis = 0; // Inicializuojam kiekį
+        studentas.pazKiekis = 0;
 
         std::cout << "Iveskite studento varda ir pavarde: ";
         std::cin >> studentas.vardas >> studentas.pavarde;
@@ -65,7 +65,6 @@ void spausdintiRezultatus(const std::vector<Student>& studentai) {
     }
 }
 
-// Pagrindinė programa (main funkcija čia pat)
 int main() {
     std::vector<Student> studentai;
 
