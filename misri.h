@@ -6,6 +6,8 @@
 #include <string>
 #include <algorithm>
 #include <iomanip>
+#include <cstdlib>
+#include <ctime>
 
 const int MAX_PAZ = 100;
 
@@ -18,7 +20,7 @@ struct Student {
     double galutinisBalas;
 };
 
-void ivestiStudentus(std::vector<Student>& studentai);
+void generuotiPazymius(Student& studentas, int kiek);
 double skaiciuotiVidurki(const int paz[], int kiekis);
 double skaiciuotiMediana(int paz[], int kiekis);
 void spausdintiRezultatus(const std::vector<Student>& studentai);

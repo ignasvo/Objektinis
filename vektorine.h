@@ -6,6 +6,9 @@
 #include <string>
 #include <algorithm>
 #include <iomanip>
+#include <cstdlib>
+#include <ctime>
+
 
 struct Student {
     std::string vardas, pavarde;
@@ -14,9 +17,10 @@ struct Student {
     double galutinisBalas;
 };
 
-void ivestiStudentus(std::vector<Student>& studentai);
 double skaiciuotiVidurki(const std::vector<int>& paz);
 double skaiciuotiMediana(std::vector<int> paz);
 void spausdintiRezultatus(const std::vector<Student>& studentai);
+void generuotiPazymius(Student& studentas, int kiek);
+void vykdytiPrograma();
 
 #endif

@@ -1,38 +1,11 @@
 #include "vektorine.h"
 
-void ivestiStudentus(std::vector<Student>& studentai) {
-
-    char pasirinkimas;
-    std::cout << "Pasirinkite skaiciavimo metoda studentams (V - vidurkis, M - mediana): ";
-    std::cin >> pasirinkimas;
-
-    char testi;
-    do {
-        Student studentas;
-        
-        std::cout << "Iveskite studento varda ir pavarde: ";
-        std::cin >> studentas.vardas >> studentas.pavarde;
-
-        std::cout << "Iveskite namu darbu pazymius (baigti -1): ";
-        int paz;
-        while (std::cin >> paz && paz != -1) {
-            studentas.namuDarbai.push_back(paz);
-        }
-
-        std::cout << "Iveskite egzamino rezultata: ";
-        std::cin >> studentas.egzaminas;
-
-        if (pasirinkimas == 'V' || pasirinkimas == 'v') {
-            studentas.galutinisBalas = 0.4 * skaiciuotiVidurki(studentas.namuDarbai) + 0.6 * studentas.egzaminas;
-        } else {
-            studentas.galutinisBalas = 0.4 * skaiciuotiMediana(studentas.namuDarbai) + 0.6 * studentas.egzaminas;
-        }
-
-        studentai.push_back(studentas);
-
-        std::cout << "Ar norite ivesti kita studenta? (T/N): ";
-        std::cin >> testi;
-    } while (testi == 'T' || testi == 't');
+void generuotiPazymius(Student& studentas, int kiek) {
+    studentas.namuDarbai.clear();
+    for (int i = 0; i < kiek; ++i) {
+        studentas.namuDarbai.push_back(rand() % 10 + 1);
+    }
+    studentas.egzaminas = rand() % 10 + 1;
 }
 
 double skaiciuotiVidurki(const std::vector<int>& paz) {
@@ -66,9 +39,66 @@ void spausdintiRezultatus(const std::vector<Student>& studentai) {
     }
 }
 
-int main() {
+void vykdytiPrograma() {
     std::vector<Student> studentai;
-    ivestiStudentus(studentai);
+    srand(time(0));
+
+    char metodas;
+    std::cout << "Pasirinkite skaiciavimo metoda (V - vidurkis, M - mediana): ";
+    std::cin >> metodas;
+
+    while (true) {
+        std::cout << "Pasirinkite veiksma:\n";
+        std::cout << "1 - Ivesti ranka\n";
+        std::cout << "2 - Generuoti pazymius\n";
+        std::cout << "4 - Baigti\n";
+        std::cout << "Jusu pasirinkimas: ";
+        
+        int pasirinkimas;
+        std::cin >> pasirinkimas;
+        
+        if (pasirinkimas == 4) {
+            std::cout << "Programa baigta.\n";
+            break;
+        }
+        
+        Student studentas;
+        std::cout << "Iveskite studento varda ir pavarde: ";
+        std::cin >> studentas.vardas >> studentas.pavarde;
+        
+        if (pasirinkimas == 1) {
+            int ndSk;
+            std::cout << "Iveskite namu darbu skaiciu: ";
+            std::cin >> ndSk;
+            std::cout << "Iveskite namu darbu rezultatus: ";
+            for (int i = 0; i < ndSk; ++i) {
+                int paz;
+                std::cin >> paz;
+                studentas.namuDarbai.push_back(paz);
+            }
+            std::cout << "Iveskite egzamino rezultata: ";
+            std::cin >> studentas.egzaminas;
+        } 
+        else if (pasirinkimas == 2) {
+            int kiek;
+            std::cout << "Kiek pazymiu generuoti? ";
+            std::cin >> kiek;
+            generuotiPazymius(studentas, kiek);
+        }
+        
+        if (metodas == 'V' || metodas == 'v') {
+            studentas.galutinisBalas = 0.4 * skaiciuotiVidurki(studentas.namuDarbai) + 0.6 * studentas.egzaminas;
+        } else {
+            studentas.galutinisBalas = 0.4 * skaiciuotiMediana(studentas.namuDarbai) + 0.6 * studentas.egzaminas;
+        }
+        
+        studentai.push_back(studentas);
+    }
+
     spausdintiRezultatus(studentai);
+}
+
+int main() {
+    vykdytiPrograma();
     return 0;
 }
