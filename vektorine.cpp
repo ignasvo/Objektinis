@@ -2,6 +2,33 @@
 
 std::vector<std::string> vardai = {"Jonas", "Petras", "Marius", "Tomas", "Lukas", "Paulius", "Mantas", "Kazys", "Antanas", "Darius"};
 std::vector<std::string> pavardes = {"Kazlauskas", "Petraitis", "Jankauskas", "Jonaitis", "Brazinskas", "Stankevicius", "Kavaliauskas", "Zukauskas", "Kavolis"};
+bool arTinkamasVardas(const std::string& tekstas) {
+    for (char c : tekstas) {
+        if (!std::isalpha(c)) return false;
+    }
+    return true;
+}
+
+bool arTinkamasPazymys(int& pazymys) {
+    std::string input;
+    while (true) {
+        std::getline(std::cin, input);
+        std::istringstream iss(input);
+        
+        if (iss >> pazymys) {
+            char leftover;
+            if (iss >> leftover) {
+                std::cout << "Klaida: netinkama ivestis. Bandykite dar karta: ";
+            } else if ((pazymys >= 1 && pazymys <= 10) || pazymys == -1) {
+                return true;
+            } else {
+                std::cout << "Klaida: skaicius turi buti nuo 1 iki 10. Bandykite dar karta: ";
+            }
+        } else {
+            std::cout << "Klaida: iveskite sveikaji skaiciu. Bandykite dar karta: ";
+        }
+    }
+}
 
 void generuotiPazymius(Student& studentas, int kiek) {
     studentas.namuDarbai.resize(kiek);
@@ -57,8 +84,10 @@ void vykdytiPrograma() {
     srand(time(0));
 
     char metodas;
-    std::cout << "Pasirinkite skaiciavimo metoda (V - vidurkis, M - mediana): ";
-    std::cin >> metodas;
+    while (metodas != 'V' && metodas != 'v' && metodas != 'M' && metodas != 'm') {
+        std::cout << "Pasirinkite skaiciavimo metoda (V - vidurkis, M - mediana): ";
+        std::cin >> metodas;
+    }
 
     while (true) {
         std::cout << "\nPasirinkite veiksma:\n";
@@ -70,32 +99,60 @@ void vykdytiPrograma() {
         
         int pasirinkimas;
         std::cin >> pasirinkimas;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         
         if (pasirinkimas == 4) break;
         
         Student studentas;
         if (pasirinkimas == 1) {
-            std::cout << "Iveskite varda ir pavarde: ";
-            std::cin >> studentas.vardas >> studentas.pavarde;
-            
-            std::cout << "Iveskite pazymius (-1 baigti): ";
-            int paz;
-            while (std::cin >> paz && paz != -1) {
-                studentas.namuDarbai.push_back(paz);
+            while (true) {
+                std::cout << "Iveskite varda ir pavarde: ";
+                std::string ivestis;
+                std::getline(std::cin, ivestis);
+                std::istringstream iss(ivestis);
+                iss >> studentas.vardas >> studentas.pavarde;
+                
+                if (arTinkamasVardas(studentas.vardas) && arTinkamasVardas(studentas.pavarde)) {
+                    break;
+                } else {
+                    std::cout << "Klaida: vardas ir pavarde turi buti sudaryti tik is raidziu. Bandykite dar karta.\n";
+                }
             }
-            
+
+            std::cout << "Iveskite pazymius (1-10, -1 baigti):\n";
+            int paz;
+            while (true) {
+                std::cout << "Pazymys: ";
+                if (arTinkamasPazymys(paz)) {
+                    if (paz == -1) break;
+                    studentas.namuDarbai.push_back(paz);
+                }
+            }
+
             std::cout << "Egzamino pazymys: ";
-            std::cin >> studentas.egzaminas;
+            arTinkamasPazymys(studentas.egzaminas);
+
             skaiciuotiGalutiniBala(studentas, metodas);
             studentai.push_back(studentas);
         } 
         else if (pasirinkimas == 2) {
-            std::cout << "Iveskite varda ir pavarde: ";
-            std::cin >> studentas.vardas >> studentas.pavarde;
-            
+            while (true) {
+                std::cout << "Iveskite varda ir pavarde: ";
+                std::string ivestis;
+                std::getline(std::cin, ivestis);
+                std::istringstream iss(ivestis);
+                iss >> studentas.vardas >> studentas.pavarde;
+                
+                if (arTinkamasVardas(studentas.vardas) && arTinkamasVardas(studentas.pavarde)) {
+                    break;
+                } else {
+                    std::cout << "Klaida: vardas ir pavarde turi buti sudaryti tik is raidziu. Bandykite dar karta.\n";
+                }
+            }
             int kiek;
             std::cout << "Kiek pazymiu generuoti? ";
             std::cin >> kiek;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             generuotiPazymius(studentas, kiek);
             skaiciuotiGalutiniBala(studentas, metodas);
             studentai.push_back(studentas);
@@ -106,6 +163,7 @@ void vykdytiPrograma() {
             std::cin >> kiekStudentu;
             std::cout << "Kiek namu darbu? ";
             std::cin >> ndSk;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             generuotiStudentus(studentai, kiekStudentu, ndSk);
             for (auto& s : studentai) skaiciuotiGalutiniBala(s, metodas);
         }

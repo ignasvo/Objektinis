@@ -8,6 +8,9 @@
 #include <iomanip>
 #include <cstdlib>
 #include <ctime>
+#include <cctype>
+#include <sstream>
+#include <limits>
 
 struct Student {
     std::string vardas, pavarde;
@@ -16,6 +19,8 @@ struct Student {
     double galutinisBalas;
 };
 
+bool arTinkamasVardas(const std::string& tekstas);
+bool arTinkamasPazymys(int& pazymys);
 void generuotiPazymius(Student& studentas, int kiek);
 void generuotiStudentus(std::vector<Student>& studentai, int kiek, int ndSk);
 double skaiciuotiVidurki(const std::vector<int>& paz);

@@ -8,6 +8,9 @@
 #include <iomanip>
 #include <cstdlib>
 #include <ctime>
+#include <cctype>
+#include <limits>
+#include <sstream>
 
 const int MAX_PAZ = 100;
 
@@ -19,6 +22,8 @@ struct Student {
     double galutinisBalas;
 };
 
+bool arTinkamasVardas(const std::string& tekstas);
+bool arTinkamasPazymys(int& pazymys);
 void generuotiPazymius(Student& studentas, int kiek);
 void generuotiStudentus(std::vector<Student>& studentai, int kiek, int ndSk);
 double skaiciuotiVidurki(const int paz[], int kiekis);
