@@ -98,11 +98,11 @@ void skaiciuotiGalutiniBala(Student& studentas, char metodas) {
 
 void spausdintiRezultatus(const std::vector<Student>& studentai) {
     std::cout << std::fixed << std::setprecision(2);
-    std::cout << "---------------------------------------------\n";
-    std::cout << "Vardas     Pavarde     Galutinis balas\n";
-    std::cout << "---------------------------------------------\n";
+    std::cout << "--------------------------------------------------\n";
+    std::cout << std::left << std::setw(15) << "Vardas" << std::setw(15) << "Pavarde" << "Galutinis balas\n";
+    std::cout << "--------------------------------------------------\n";
     for (const auto& studentas : studentai) {
-        std::cout << studentas.vardas << "       " << studentas.pavarde << "       " << studentas.galutinisBalas << "\n";
+        std::cout << std::left << std::setw(15) << studentas.vardas << std::setw(15) << studentas.pavarde << studentas.galutinisBalas << "\n";
     }
 }
 
