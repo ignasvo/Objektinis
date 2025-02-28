@@ -96,6 +96,23 @@ void skaiciuotiGalutiniBala(Student& studentas, char metodas) {
     }
 }
 
+void rikiuotiStudentus(std::vector<Student>& studentai, char kriterijus) {
+    if (kriterijus == 'V' || kriterijus == 'v') {
+        std::sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
+            return a.vardas < b.vardas;
+        });
+    } else if (kriterijus == 'P' || kriterijus == 'p') {
+        std::sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
+            return a.pavarde < b.pavarde;
+        });
+    } else if (kriterijus == 'G' || kriterijus == 'g') {
+        std::sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
+            return a.galutinisBalas > b.galutinisBalas;
+        });
+    }
+}
+
+
 void spausdintiRezultatus(const std::vector<Student>& studentai) {
     std::cout << std::fixed << std::setprecision(2);
     std::cout << "--------------------------------------------------\n";
@@ -208,6 +225,11 @@ void vykdytiPrograma() {
             }
         }
     }
+
+    char rikiavimas;
+    std::cout << "Pasirinkite rikiavimo kriteriju (V - vardas, P - pavarde, G - galutinis balas): ";
+    std::cin >> rikiavimas;
+    rikiuotiStudentus(studentai, rikiavimas);
 
     spausdintiRezultatus(studentai);
 }

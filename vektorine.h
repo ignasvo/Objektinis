@@ -31,6 +31,7 @@ void skaiciuotiGalutiniBala(Student& studentas, char metodas);
 void spausdintiRezultatus(const std::vector<Student>& studentai);
 void vykdytiPrograma();
 void nuskaitytiIsFailo(std::vector<Student>& studentai, const std::string& failoVardas);
+void rikiuotiStudentus(std::vector<Student>& studentai, char kriterijus);
 
 
 #endif
