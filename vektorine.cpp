@@ -217,12 +217,20 @@ void vykdytiPrograma() {
             std::string failoVardas;
             std::cout << "Iveskite failo pavadinima: ";
             std::getline(std::cin, failoVardas);
+
+            auto start = std::chrono::high_resolution_clock::now();
+
             try {
                 nuskaitytiIsFailo(studentai, failoVardas);
                 for (auto& s : studentai) skaiciuotiGalutiniBala(s, metodas);
             } catch (const std::runtime_error& e) {
                 std::cout << e.what() << std::endl;
             }
+
+            auto end = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> diff = end - start;
+            std::cout << "Failas: " << failoVardas << " apdorotas per " << diff.count() << " sekundes.\n";
+    
         }
     }
 
