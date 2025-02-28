@@ -2,6 +2,7 @@
 #define VEKTORINE_H
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -11,6 +12,7 @@
 #include <cctype>
 #include <sstream>
 #include <limits>
+#include <stdexcept>
 
 struct Student {
     std::string vardas, pavarde;
@@ -28,5 +30,7 @@ double skaiciuotiMediana(std::vector<int> paz);
 void skaiciuotiGalutiniBala(Student& studentas, char metodas);
 void spausdintiRezultatus(const std::vector<Student>& studentai);
 void vykdytiPrograma();
+void nuskaitytiIsFailo(std::vector<Student>& studentai, const std::string& failoVardas);
+
 
 #endif

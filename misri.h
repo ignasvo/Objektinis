@@ -11,6 +11,7 @@
 #include <cctype>
 #include <limits>
 #include <sstream>
+#include <stdexcept>
 
 const int MAX_PAZ = 100;
 
