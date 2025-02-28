@@ -3,6 +3,30 @@
 std::vector<std::string> vardai = {"Jonas", "Petras", "Marius", "Tomas", "Lukas", "Paulius", "Mantas", "Kazys", "Antanas", "Darius"};
 std::vector<std::string> pavardes = {"Kazlauskas", "Petraitis", "Jankauskas", "Jonaitis", "Brazinskas", "Stankevicius", "Kavaliauskas", "Zukauskas", "Kavolis"};
 
+void nuskaitytiIsFailo(std::vector<Student>& studentai, const std::string& failoVardas) {
+    std::ifstream failas(failoVardas);
+    if (!failas) {
+        throw std::runtime_error("Failas nerastas: " + failoVardas);
+    }
+
+    std::string eilute;
+    getline(failas, eilute); // Praleidžiama antraštė
+
+    while (getline(failas, eilute)) {
+        std::istringstream iss(eilute);
+        Student studentas;
+        iss >> studentas.vardas >> studentas.pavarde;
+
+        int pazymys;
+        while (iss >> pazymys) {
+            studentas.namuDarbai[studentas.pazKiekis++] = pazymys;
+        }
+
+        studentas.egzaminas = studentas.namuDarbai[--studentas.pazKiekis];
+        studentai.push_back(studentas);
+    }
+}
+
 bool arTinkamasVardas(const std::string& tekstas) {
     for (char c : tekstas) {
         if (!std::isalpha(c)) return false;
@@ -95,14 +119,15 @@ void vykdytiPrograma() {
         std::cout << "1 - Ivesti ranka\n";
         std::cout << "2 - Generuoti pazymius\n";
         std::cout << "3 - Generuoti studentus ir pazymius\n";
-        std::cout << "4 - Baigti\n";
+        std::cout << "4 - Nuskaityti is failo\n";
+        std::cout << "5 - Baigti\n";
         std::cout << "Jusu pasirinkimas: ";
         
         int pasirinkimas;
         std::cin >> pasirinkimas;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         
-        if (pasirinkimas == 4) break;
+        if (pasirinkimas == 5) break;
         
         Student studentas;
         if (pasirinkimas == 1) {
@@ -169,6 +194,18 @@ void vykdytiPrograma() {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             generuotiStudentus(studentai, kiekStudentu, ndSk);
             for (auto& s : studentai) skaiciuotiGalutiniBala(s, metodas);
+        }
+
+        else if (pasirinkimas == 4) {
+            std::string failoVardas;
+            std::cout << "Iveskite failo pavadinima: ";
+            std::getline(std::cin, failoVardas);
+            try {
+                nuskaitytiIsFailo(studentai, failoVardas);
+                for (auto& s : studentai) skaiciuotiGalutiniBala(s, metodas);
+            } catch (const std::runtime_error& e) {
+                std::cout << e.what() << std::endl;
+            }
         }
     }
     spausdintiRezultatus(studentai);
