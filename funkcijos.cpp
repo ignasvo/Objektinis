@@ -29,7 +29,7 @@ void nuskaitytiIsFailo(std::vector<Student>& studentai, const std::string& failo
         std::istringstream iss(eilute);
         Student studentas;
         if (!(iss >> studentas.vardas >> studentas.pavarde)) {
-            throw std::runtime_error("Neteisinga eilutės struktūra faile: " + failoVardas);
+            throw std::runtime_error("Neteisinga eilutes struktera faile: " + failoVardas);
         }
 
         int pazymys;
@@ -38,7 +38,7 @@ void nuskaitytiIsFailo(std::vector<Student>& studentai, const std::string& failo
         }
 
         if (studentas.namuDarbai.empty()) {
-            throw std::runtime_error("Trūksta pažymių studentui: " + studentas.vardas + " " + studentas.pavarde);
+            throw std::runtime_error("Truksta pazymiu studentui: " + studentas.vardas + " " + studentas.pavarde);
         }
 
         studentas.egzaminas = studentas.namuDarbai.back();
@@ -262,13 +262,13 @@ void vykdytiPrograma() {
                     try {
                         nuskaitytiIsFailo(studentai, failoVardas);
                         for (auto& s : studentai) skaiciuotiGalutiniBala(s, metodas);
+                        auto end = std::chrono::high_resolution_clock::now();
+                        std::chrono::duration<double> diff = end - start;
+                        std::cout << "Failas: " << failoVardas << " apdorotas per " << diff.count() << " sekundes.\n";
                     } catch (const std::runtime_error& e) {
                         std::cout << e.what() << std::endl;
                     }
 
-                    auto end = std::chrono::high_resolution_clock::now();
-                    std::chrono::duration<double> diff = end - start;
-                    std::cout << "Failas: " << failoVardas << " apdorotas per " << diff.count() << " sekundes.\n";
                 }
             } catch (const std::exception& e) {
                 std::cout << "Klaida vykdant pasirinkta veiksma: " << e.what() << std::endl;
