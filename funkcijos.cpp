@@ -115,18 +115,27 @@ void skaiciuotiGalutiniBala(Student& studentas, char metodas) {
 }
 
 void rikiuotiStudentus(std::vector<Student>& studentai, char kriterijus) {
-    if (kriterijus == 'V' || kriterijus == 'v') {
-        std::sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
-            return a.vardas < b.vardas;
-        });
-    } else if (kriterijus == 'P' || kriterijus == 'p') {
-        std::sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
-            return a.pavarde < b.pavarde;
-        });
-    } else if (kriterijus == 'G' || kriterijus == 'g') {
-        std::sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
-            return a.galutinisBalas > b.galutinisBalas;
-        });
+    while (true) {
+        if (kriterijus == 'V' || kriterijus == 'v') {
+            std::sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
+                return a.vardas < b.vardas;
+            });
+            break;
+        } else if (kriterijus == 'P' || kriterijus == 'p') {
+            std::sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
+                return a.pavarde < b.pavarde;
+            });
+            break;
+        } else if (kriterijus == 'G' || kriterijus == 'g') {
+            std::sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
+                return a.galutinisBalas > b.galutinisBalas;
+            });
+            break;
+        } else {
+            std::cout << "KLAIDA: Neteisingas rikiavimo kriterijus. Bandykite dar kartą.\n";
+            std::cout << "Pasirinkite rikiavimo kriteriju (V - vardas, P - pavardė, G - galutinis balas): ";
+            std::cin >> kriterijus;
+        }
     }
 }
 
