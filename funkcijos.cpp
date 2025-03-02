@@ -132,7 +132,7 @@ void rikiuotiStudentus(std::vector<Student>& studentai, char kriterijus) {
             });
             break;
         } else {
-            std::cout << "KLAIDA: Neteisingas rikiavimo kriterijus. Bandykite dar kartą.\n";
+            std::cout << "KLAIDA: Neteisingas rikiavimo kriterijus. Bandykite dar karta.\n";
             std::cout << "Pasirinkite rikiavimo kriteriju (V - vardas, P - pavardė, G - galutinis balas): ";
             std::cin >> kriterijus;
         }
@@ -140,6 +140,12 @@ void rikiuotiStudentus(std::vector<Student>& studentai, char kriterijus) {
 }
 
 void spausdintiRezultatus(const std::vector<Student>& studentai) {
+
+    if (studentai.empty()) {
+        std::cout << "Nera studentu duomenu.\n";
+        return;
+    }
+
     std::cout << std::fixed << std::setprecision(2);
     std::cout << "--------------------------------------------------\n";
     std::cout << std::left << std::setw(15) << "Vardas" << std::setw(15) << "Pavarde" << "Galutinis balas\n";
