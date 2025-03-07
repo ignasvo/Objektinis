@@ -157,19 +157,19 @@ void generuotiFaila(const std::string& failoPavadinimas, int studentuKiekis, int
     }
     
     // Įrašome antraštę (pasirinktina)
-    out << "Vardas Pavarde ";
+    out << std::left << std::setw(15) << "Vardas" << std::setw(15) << "Pavarde";
     for (int i = 0; i < ndSk; ++i) {
-         out << "ND" << (i + 1) << " ";
+        out << std::setw(5) << ("ND" + std::to_string(i + 1));
     }
-    out << "Egzaminas\n";
+    out << std::setw(10) << "Egzaminas\n";
     
     // Įrašome kiekvieno studento duomenis eilutėmis
     for (const auto& studentas : studentai) {
-         out << studentas.vardas << " " << studentas.pavarde << " ";
-         for (int paz : studentas.namuDarbai) {
-              out << paz << " ";
-         }
-         out << studentas.egzaminas << "\n";
+        out << std::left << std::setw(15) << studentas.vardas << std::setw(15) << studentas.pavarde;
+        for (int paz : studentas.namuDarbai) {
+            out << std::setw(5) << paz;
+        }
+        out << std::setw(10) << studentas.egzaminas << "\n";
     }
     
     out.close();
