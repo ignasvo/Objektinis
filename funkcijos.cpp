@@ -16,6 +16,50 @@
 std::vector<std::string> vardai = {"Jonas", "Petras", "Marius", "Tomas", "Lukas", "Paulius", "Mantas", "Kazys", "Antanas", "Darius"};
 std::vector<std::string> pavardes = {"Kazlauskas", "Petraitis", "Jankauskas", "Jonaitis", "Brazinskas", "Stankevicius", "Kavaliauskas", "Zukauskas", "Kavolis"};
 
+
+void testuotiDuomenuApdorojima(const std::string& failoVardas) {
+    std::vector<Student> studentai;
+
+    // 1. NUSKAITYMAS IŠ FAILO
+    auto startNuskaitymas = std::chrono::high_resolution_clock::now();
+    try {
+        nuskaitytiIsFailo(studentai, failoVardas);
+    } catch (const std::runtime_error& e) {
+        std::cerr << "Klaida skaitant faila: " << e.what() << std::endl;
+        return;
+    }
+    auto endNuskaitymas = std::chrono::high_resolution_clock::now();
+    
+    // 2. STUDENTŲ RŪŠIAVIMAS Į DVI GRUPES
+    std::vector<Student> vargsiai, kietiakai;
+    auto startRusiavimas = std::chrono::high_resolution_clock::now();
+    padalintiStudentus(studentai, vargsiai, kietiakai);
+    auto endRusiavimas = std::chrono::high_resolution_clock::now();
+    
+    // 3. IŠVEDIMAS Į NAUJUS FAILUS
+    std::string baseName = failoVardas.substr(0, failoVardas.find_last_of('.'));
+    std::string failoVargsiukai = baseName + "_vargsiukai.txt";
+    std::string failoKietiakai = baseName + "_kietiakai.txt";
+    
+    auto startIsvedimas = std::chrono::high_resolution_clock::now();
+    spausdintiStudentusIFaila(vargsiai, failoVargsiukai);
+    spausdintiStudentusIFaila(kietiakai, failoKietiakai);
+    auto endIsvedimas = std::chrono::high_resolution_clock::now();
+    
+    // 4. REZULTATŲ IŠVEDIMAS
+    std::chrono::duration<double> laikasNuskaitymas = endNuskaitymas - startNuskaitymas;
+    std::chrono::duration<double> laikasRusiavimas = endRusiavimas - startRusiavimas;
+    std::chrono::duration<double> laikasIsvedimas = endIsvedimas - startIsvedimas;
+    std::chrono::duration<double> bendrasLaikas = endIsvedimas - startNuskaitymas;
+
+    std::cout << "Failo: " << failoVardas << " apdorojimo rezultatai:\n";
+    std::cout << "  1) Nuskaitymas is failo: " << laikasNuskaitymas.count() << " s\n";
+    std::cout << "  2) Studentu rusiavimas: " << laikasRusiavimas.count() << " s\n";
+    std::cout << "  3) Rezultatu isvedimas: " << laikasIsvedimas.count() << " s\n";
+    std::cout << "  --------------------------------------\n";
+    std::cout << "  BENDRAS LAIKAS: " << bendrasLaikas.count() << " s\n";
+}
+
 void nuskaitytiIsFailo(std::vector<Student>& studentai, const std::string& failoVardas) {
     std::ifstream failas(failoVardas);
     if (!failas) {
@@ -194,7 +238,7 @@ void spausdintiStudentusIFaila(const std::vector<Student>& studentai, const std:
     out.close();
 }
 
-void apdorotiFaila(const std::string& failoVardas) {
+void apdorotiFaila(const std::string& failoVardas, char metodas) {
     std::vector<Student> studentai;
     try {
         nuskaitytiIsFailo(studentai, failoVardas);
@@ -203,9 +247,8 @@ void apdorotiFaila(const std::string& failoVardas) {
         return;
     }
     
-    // (Pasikartotinai apskaičiuojame galutinį balą, jei reikia)
     for (auto& s : studentai) {
-         skaiciuotiGalutiniBala(s, 'v');
+         skaiciuotiGalutiniBala(s, metodas);
     }
     
     // Padalijame į dvi grupes
@@ -263,7 +306,8 @@ void vykdytiPrograma() {
                 std::cout << "4 - Nuskaityti is failo\n";
                 std::cout << "5 - Generuoti failus\n";
                 std::cout << "6 - Apdoroti faila\n";
-                std::cout << "7 - Baigti\n";
+                std::cout << "7 - Testuoti apdorojima\n";
+                std::cout << "8 - Baigti\n";
                 std::cout << "Jusu pasirinkimas: ";
                 
                 int pasirinkimas;
@@ -272,7 +316,7 @@ void vykdytiPrograma() {
                 }
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 
-                if (pasirinkimas == 7) {
+                if (pasirinkimas == 8) {
                     testi = false;
                     break;
                 }
@@ -371,19 +415,23 @@ void vykdytiPrograma() {
                     std::cout << "Iveskite failo pavadinima: ";
                     std::getline(std::cin, failoPavadinimas);
                     
-                    auto start = std::chrono::steady_clock::now();
                     generuotiFaila(failoPavadinimas, studentuKiekis, ndSk, metodas);
-                    auto end = std::chrono::steady_clock::now();
-                    std::chrono::duration<double> diff = end - start;
-                    
-                    std::cout << "Failo " << failoPavadinimas << " generavimas uztruko " << diff.count() << " s\n";
+                  
+                    std::cout << "Failas sugeneruotas";
                 }
 
                 else if (pasirinkimas == 6) {
                     std::string failoVardas;
                     std::cout << "Iveskite failo pavadinima: ";
                     std::getline(std::cin, failoVardas);
-                    apdorotiFaila(failoVardas);
+                    apdorotiFaila(failoVardas, metodas);
+                }
+
+                else if (pasirinkimas == 7) {
+                    std::string failoVardas;
+                    std::cout << "Iveskite testuojamo failo pavadinima: ";
+                    std::getline(std::cin, failoVardas);
+                    testuotiDuomenuApdorojima(failoVardas);
                 }
 
             } catch (const std::exception& e) {

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+void testuotiDuomenuApdorojima(const std::string& failoVardas);
 bool arTinkamasVardas(const std::string& tekstas);
 bool arTinkamasPazymys(int& pazymys);
 void generuotiPazymius(Student& studentas, int kiek);
