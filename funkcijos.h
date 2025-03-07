@@ -12,7 +12,7 @@ void generuotiStudentus(std::vector<Student>& studentai, int kiek, int ndSk);
 double skaiciuotiVidurki(const std::vector<int>& paz);
 double skaiciuotiMediana(std::vector<int> paz);
 void skaiciuotiGalutiniBala(Student& studentas, char metodas);
-void spausdintiRezultatus(const std::vector<Student>& studentai);
+void spausdintiRezultatus(const std::vector<Student>& studentai, std::ostream& out);
 void nuskaitytiIsFailo(std::vector<Student>& studentai, const std::string& failoVardas);
 void rikiuotiStudentus(std::vector<Student>& studentai, char kriterijus);
 void vykdytiPrograma();

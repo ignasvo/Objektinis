@@ -139,19 +139,19 @@ void rikiuotiStudentus(std::vector<Student>& studentai, char kriterijus) {
     }
 }
 
-void spausdintiRezultatus(const std::vector<Student>& studentai) {
+void spausdintiRezultatus(const std::vector<Student>& studentai, std::ostream& out) {
 
     if (studentai.empty()) {
-        std::cout << "Nera studentu duomenu.\n";
+        out << "Nera studentu duomenu.\n";
         return;
     }
 
-    std::cout << std::fixed << std::setprecision(2);
-    std::cout << "--------------------------------------------------\n";
-    std::cout << std::left << std::setw(15) << "Vardas" << std::setw(15) << "Pavarde" << "Galutinis balas\n";
-    std::cout << "--------------------------------------------------\n";
+    out << std::fixed << std::setprecision(2);
+    out << "--------------------------------------------------\n";
+    out << std::left << std::setw(15) << "Vardas" << std::setw(15) << "Pavarde" << "Galutinis balas\n";
+    out << "--------------------------------------------------\n";
     for (const auto& studentas : studentai) {
-        std::cout << std::left << std::setw(15) << studentas.vardas << std::setw(15) << studentas.pavarde << studentas.galutinisBalas << "\n";
+       out << std::left << std::setw(15) << studentas.vardas << std::setw(15) << studentas.pavarde << studentas.galutinisBalas << "\n";
     }
 }
 
@@ -282,7 +282,31 @@ void vykdytiPrograma() {
         std::cin >> rikiavimas;
         rikiuotiStudentus(studentai, rikiavimas);
 
-        spausdintiRezultatus(studentai);
+        char isvedimoBudas;
+        std::cout << "\nPasirinkite isvedimo budą:\n";
+        std::cout << "T - isvesti i terminala\n";
+        std::cout << "F - isvesti i faila\n";
+        std::cout << "Jusu pasirinkimas: ";
+        std::cin >> isvedimoBudas;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        if (isvedimoBudas == 'F' || isvedimoBudas == 'f') {
+            std::string failoVardas;
+            std::cout << "Iveskite failo pavadinima, į kuri isvesti rezultatus: ";
+            std::getline(std::cin, failoVardas);
+            std::ofstream out(failoVardas);
+        if (!out) {
+            std::cerr << "Nepavyko atidaryti failo: " << failoVardas << std::endl;
+            return;
+        }
+        spausdintiRezultatus(studentai, out);
+        out.close();
+        std::cout << "Rezultatai isvesti i faila: " << failoVardas << std::endl;
+    } else {
+        // Išveda į terminalą
+        spausdintiRezultatus(studentai, std::cout);
+    }
+
     } catch (const std::exception& e) {
         std::cerr << "Kritine klaida: " << e.what() << std::endl;
     }
