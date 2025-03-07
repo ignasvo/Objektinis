@@ -139,6 +139,42 @@ void rikiuotiStudentus(std::vector<Student>& studentai, char kriterijus) {
     }
 }
 
+void generuotiFaila(const std::string& failoPavadinimas, int studentuKiekis, int ndSk, char metodas) {
+    // Sugeneruojame studentų duomenis
+    std::vector<Student> studentai;
+    generuotiStudentus(studentai, studentuKiekis, ndSk);
+    
+    // Apskaičiuojame galutinius balus kiekvienam studentui 
+    for (auto& s : studentai) {
+         skaiciuotiGalutiniBala(s, metodas);
+    }
+    
+    // Atidarome failą įrašymui
+    std::ofstream out(failoPavadinimas);
+    if (!out) {
+         std::cerr << "Nepavyko atidaryti failo: " << failoPavadinimas << std::endl;
+         return;
+    }
+    
+    // Įrašome antraštę (pasirinktina)
+    out << "Vardas Pavarde ";
+    for (int i = 0; i < ndSk; ++i) {
+         out << "ND" << (i + 1) << " ";
+    }
+    out << "Egzaminas\n";
+    
+    // Įrašome kiekvieno studento duomenis eilutėmis
+    for (const auto& studentas : studentai) {
+         out << studentas.vardas << " " << studentas.pavarde << " ";
+         for (int paz : studentas.namuDarbai) {
+              out << paz << " ";
+         }
+         out << studentas.egzaminas << "\n";
+    }
+    
+    out.close();
+}
+
 void spausdintiRezultatus(const std::vector<Student>& studentai, std::ostream& out) {
 
     if (studentai.empty()) {
@@ -174,7 +210,8 @@ void vykdytiPrograma() {
                 std::cout << "2 - Generuoti pazymius\n";
                 std::cout << "3 - Generuoti studentus ir pazymius\n";
                 std::cout << "4 - Nuskaityti is failo\n";
-                std::cout << "5 - Baigti\n";
+                std::cout << "5 - Generuoti failus\n";
+                std::cout << "6 - Baigti\n";
                 std::cout << "Jusu pasirinkimas: ";
                 
                 int pasirinkimas;
@@ -183,7 +220,7 @@ void vykdytiPrograma() {
                 }
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 
-                if (pasirinkimas == 5) {
+                if (pasirinkimas == 6) {
                     testi = false;
                     break;
                 }
@@ -270,6 +307,26 @@ void vykdytiPrograma() {
                     }
 
                 }
+
+                else if (pasirinkimas == 5) { 
+                    int studentuKiekis, ndSk;
+                    std::string failoPavadinimas;
+                    std::cout << "Kiek studentu sugeneruoti? ";
+                    std::cin >> studentuKiekis;
+                    std::cout << "Kiek namu darbu? ";
+                    std::cin >> ndSk;
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout << "Iveskite failo pavadinima: ";
+                    std::getline(std::cin, failoPavadinimas);
+                    
+                    auto start = std::chrono::steady_clock::now();
+                    generuotiFaila(failoPavadinimas, studentuKiekis, ndSk, metodas);
+                    auto end = std::chrono::steady_clock::now();
+                    std::chrono::duration<double> diff = end - start;
+                    
+                    std::cout << "Failo " << failoPavadinimas << " generavimas uztruko " << diff.count() << " s\n";
+                }
+
             } catch (const std::exception& e) {
                 std::cout << "Klaida vykdant pasirinkta veiksma: " << e.what() << std::endl;
                 std::cin.clear();
