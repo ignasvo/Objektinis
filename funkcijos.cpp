@@ -175,6 +175,57 @@ void generuotiFaila(const std::string& failoPavadinimas, int studentuKiekis, int
     out.close();
 }
 
+void padalintiStudentus(const std::vector<Student>& studentai, std::vector<Student>& vargsiai, std::vector<Student>& kietiakai) {
+for (const auto& stud : studentai) {
+    if (stud.galutinisBalas < 5.0)
+    vargsiai.push_back(stud);
+else
+    kietiakai.push_back(stud);
+}
+}
+
+void spausdintiStudentusIFaila(const std::vector<Student>& studentai, const std::string& failoVardas) {
+    std::ofstream out(failoVardas);
+    if (!out) {
+        std::cerr << "Nepavyko atidaryti failo: " << failoVardas << "\n";
+        return;
+    }
+    spausdintiRezultatus(studentai, out);
+    out.close();
+}
+
+void apdorotiFaila(const std::string& failoVardas) {
+    std::vector<Student> studentai;
+    try {
+        nuskaitytiIsFailo(studentai, failoVardas);
+    } catch (const std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
+        return;
+    }
+    
+    // (Pasikartotinai apskaičiuojame galutinį balą, jei reikia)
+    for (auto& s : studentai) {
+         skaiciuotiGalutiniBala(s, 'v');
+    }
+    
+    // Padalijame į dvi grupes
+    std::vector<Student> vargsiai, kietiakai;
+    padalintiStudentus(studentai, vargsiai, kietiakai);
+    
+    // Sugeneruojame naujų failų vardus – pridėsime priesagą pagal įvertinimą
+    std::string baseName = failoVardas.substr(0, failoVardas.find_last_of('.'));
+    std::string failoVargsiukai = baseName + "_vargsiukai.txt";
+    std::string failoKietiakai = baseName + "_kietiakai.txt";
+    
+    // Išvedame duomenis į atskirus failus
+    spausdintiStudentusIFaila(vargsiai, failoVargsiukai);
+    spausdintiStudentusIFaila(kietiakai, failoKietiakai);
+    
+    std::cout << "Failas " << failoVardas << " buvo apdorotas:\n";
+    std::cout << "  - Vargsių rezultatai: " << failoVargsiukai << "\n";
+    std::cout << "  - Kietių rezultatai: " << failoKietiakai << "\n";
+}
+
 void spausdintiRezultatus(const std::vector<Student>& studentai, std::ostream& out) {
 
     if (studentai.empty()) {
@@ -211,7 +262,8 @@ void vykdytiPrograma() {
                 std::cout << "3 - Generuoti studentus ir pazymius\n";
                 std::cout << "4 - Nuskaityti is failo\n";
                 std::cout << "5 - Generuoti failus\n";
-                std::cout << "6 - Baigti\n";
+                std::cout << "6 - Apdoroti faila\n";
+                std::cout << "7 - Baigti\n";
                 std::cout << "Jusu pasirinkimas: ";
                 
                 int pasirinkimas;
@@ -220,7 +272,7 @@ void vykdytiPrograma() {
                 }
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 
-                if (pasirinkimas == 6) {
+                if (pasirinkimas == 7) {
                     testi = false;
                     break;
                 }
@@ -325,6 +377,13 @@ void vykdytiPrograma() {
                     std::chrono::duration<double> diff = end - start;
                     
                     std::cout << "Failo " << failoPavadinimas << " generavimas uztruko " << diff.count() << " s\n";
+                }
+
+                else if (pasirinkimas == 6) {
+                    std::string failoVardas;
+                    std::cout << "Iveskite failo pavadinima: ";
+                    std::getline(std::cin, failoVardas);
+                    apdorotiFaila(failoVardas);
                 }
 
             } catch (const std::exception& e) {
