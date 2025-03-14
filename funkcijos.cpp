@@ -17,7 +17,7 @@ std::vector<std::string> vardai = {"Jonas", "Petras", "Marius", "Tomas", "Lukas"
 std::vector<std::string> pavardes = {"Kazlauskas", "Petraitis", "Jankauskas", "Jonaitis", "Brazinskas", "Stankevicius", "Kavaliauskas", "Zukauskas", "Kavolis"};
 
 
-void testuotiDuomenuApdorojima(const std::string& failoVardas) {
+void testuotiDuomenuApdorojima(const std::string& failoVardas, char metodas) {
     std::vector<Student> studentai;
 
     // 1. NUSKAITYMAS IŠ FAILO
@@ -29,6 +29,10 @@ void testuotiDuomenuApdorojima(const std::string& failoVardas) {
         return;
     }
     auto endNuskaitymas = std::chrono::high_resolution_clock::now();
+
+    for (auto& s : studentai) {
+        skaiciuotiGalutiniBala(s, metodas);
+    }
     
     // 2. STUDENTŲ RŪŠIAVIMAS Į DVI GRUPES
     std::vector<Student> vargsiai, kietiakai;
@@ -265,8 +269,8 @@ void apdorotiFaila(const std::string& failoVardas, char metodas) {
     spausdintiStudentusIFaila(kietiakai, failoKietiakai);
     
     std::cout << "Failas " << failoVardas << " buvo apdorotas:\n";
-    std::cout << "  - Vargsių rezultatai: " << failoVargsiukai << "\n";
-    std::cout << "  - Kietių rezultatai: " << failoKietiakai << "\n";
+    std::cout << "  - Vargsiu rezultatai: " << failoVargsiukai << "\n";
+    std::cout << "  - Kietiu rezultatai: " << failoKietiakai << "\n";
 }
 
 void spausdintiRezultatus(const std::vector<Student>& studentai, std::ostream& out) {
@@ -431,7 +435,7 @@ void vykdytiPrograma() {
                     std::string failoVardas;
                     std::cout << "Iveskite testuojamo failo pavadinima: ";
                     std::getline(std::cin, failoVardas);
-                    testuotiDuomenuApdorojima(failoVardas);
+                    testuotiDuomenuApdorojima(failoVardas, metodas);
                 }
 
             } catch (const std::exception& e) {
@@ -447,7 +451,7 @@ void vykdytiPrograma() {
         rikiuotiStudentus(studentai, rikiavimas);
 
         char isvedimoBudas;
-        std::cout << "\nPasirinkite isvedimo budą:\n";
+        std::cout << "\nPasirinkite isvedimo buda:\n";
         std::cout << "T - isvesti i terminala\n";
         std::cout << "F - isvesti i faila\n";
         std::cout << "Jusu pasirinkimas: ";
