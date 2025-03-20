@@ -64,7 +64,8 @@ void testuotiDuomenuApdorojima(const std::string& failoVardas, char metodas) {
     std::cout << "  BENDRAS LAIKAS: " << bendrasLaikas.count() << " s\n";
 }
 
-void nuskaitytiIsFailo(std::vector<Student>& studentai, const std::string& failoVardas) {
+template<typename Container>
+void nuskaitytiIsFailo(Container& studentai, const std::string& failoVardas) {
     std::ifstream failas(failoVardas);
     if (!failas) {
         throw std::runtime_error("Failas nerastas: " + failoVardas);
@@ -77,7 +78,7 @@ void nuskaitytiIsFailo(std::vector<Student>& studentai, const std::string& failo
         std::istringstream iss(eilute);
         Student studentas;
         if (!(iss >> studentas.vardas >> studentas.pavarde)) {
-            throw std::runtime_error("Neteisinga eilutes struktera faile: " + failoVardas);
+            throw std::runtime_error("Neteisinga eilutės struktūra faile: " + failoVardas);
         }
 
         int pazymys;
@@ -86,12 +87,12 @@ void nuskaitytiIsFailo(std::vector<Student>& studentai, const std::string& failo
         }
 
         if (studentas.namuDarbai.empty()) {
-            throw std::runtime_error("Truksta pazymiu studentui: " + studentas.vardas + " " + studentas.pavarde);
+            throw std::runtime_error("Trūksta pažymių studentui: " + studentas.vardas + " " + studentas.pavarde);
         }
 
         studentas.egzaminas = studentas.namuDarbai.back();
         studentas.namuDarbai.pop_back();
-        studentai.push_back(studentas);
+        studentai.push_back(studentas); // Šis metodas veikia su vector, list ir deque
     }
 }
 
