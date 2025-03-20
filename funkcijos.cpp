@@ -226,13 +226,15 @@ void generuotiFaila(const std::string& failoPavadinimas, int studentuKiekis, int
     out.close();
 }
 
-void padalintiStudentus(const std::vector<Student>& studentai, std::vector<Student>& vargsiai, std::vector<Student>& kietiakai) {
-for (const auto& stud : studentai) {
-    if (stud.galutinisBalas < 5.0)
-    vargsiai.push_back(stud);
-else
-    kietiakai.push_back(stud);
-}
+template<typename Container>
+void padalintiStudentus(const Container& studentai, Container& vargsiai, Container& kietiakai) {
+    for (const auto& stud : studentai) {
+        if (stud.galutinisBalas < 5.0) {
+            vargsiai.push_back(stud);
+        } else {
+            kietiakai.push_back(stud);
+        }
+    }
 }
 
 void spausdintiStudentusIFaila(const std::vector<Student>& studentai, const std::string& failoVardas) {
