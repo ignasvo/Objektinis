@@ -163,28 +163,30 @@ void skaiciuotiGalutiniBala(Student& studentas, char metodas) {
     }
 }
 
-void rikiuotiStudentus(std::vector<Student>& studentai, char kriterijus) {
-    while (true) {
-        if (kriterijus == 'V' || kriterijus == 'v') {
-            std::sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
+template<typename Container>
+void rikiuotiStudentus(Container& studentai, char kriterijus) {
+    if constexpr (std::is_same_v<Container, std::list<Student>>) {
+        // std::list turi savo sort() metodą
+        studentai.sort([kriterijus](const Student& a, const Student& b) {
+            if (kriterijus == 'V' || kriterijus == 'v') {
                 return a.vardas < b.vardas;
-            });
-            break;
-        } else if (kriterijus == 'P' || kriterijus == 'p') {
-            std::sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
+            } else if (kriterijus == 'P' || kriterijus == 'p') {
                 return a.pavarde < b.pavarde;
-            });
-            break;
-        } else if (kriterijus == 'G' || kriterijus == 'g') {
-            std::sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
+            } else {
                 return a.galutinisBalas > b.galutinisBalas;
-            });
-            break;
-        } else {
-            std::cout << "KLAIDA: Neteisingas rikiavimo kriterijus. Bandykite dar karta.\n";
-            std::cout << "Pasirinkite rikiavimo kriteriju (V - vardas, P - pavardė, G - galutinis balas): ";
-            std::cin >> kriterijus;
-        }
+            }
+        });
+    } else {
+        // std::vector ir std::deque naudoja std::sort
+        std::sort(studentai.begin(), studentai.end(), [kriterijus](const Student& a, const Student& b) {
+            if (kriterijus == 'V' || kriterijus == 'v') {
+                return a.vardas < b.vardas;
+            } else if (kriterijus == 'P' || kriterijus == 'p') {
+                return a.pavarde < b.pavarde;
+            } else {
+                return a.galutinisBalas > b.galutinisBalas;
+            }
+        });
     }
 }
 
