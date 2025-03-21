@@ -1,33 +1,78 @@
-# Studentų failų generavimo ir apdorojimo tyrimai
+# Studentų duomenų apdorojimo testavimas
 
-Šiame dokumente pateikiami du tyrimai:  
-1. **Studentų failų generavimas** skirtingais dydžiais.  
-2. **Failų apdorojimo efektyvumo analizė** su įvairiais studentų kiekiais.
+Ši programa testuoja trijų skirtingų konteinerių (`std::vector`, `std::list`, `std::deque`) veikimo spartą apdorojant studentų duomenis. Testavimas atliekamas su skirtingo dydžio failais, kuriuose yra nuo 1 000 iki 10 000 000 įrašų.
 
 ---
 
-## 1 tyrimas: Failų generavimas
-**Tikslas**: Sugeneruoti studentų duomenų failus šiais dydžiais:  
-- 1 000 studentų  
-- 10 000 studentų  
-- 100 000 studentų  
-- 1 000 000 studentų  
-- 10 000 000 studentų 
+## Testavimo rezultatai
 
-![image](https://github.com/user-attachments/assets/b3fe5b7c-4646-43cd-9a3b-39e8f145cda6)
+### Testavimo sistemos parametrai
+- **Procesorius:** AMD Ryzen 7 7840U
+- **RAM:** 16 GB DDR4
+- **Disko tipas:** SSD
+---
 
-## 2 tyrimas: Failų apdorojimas
-**Tikslas**: Išmatuoti duomenų apdorojimo laiką skirtingiems studentų kiekiams.  
+### Rezultatai
 
-**Veiksmai**:  
-1. Failo nuskaitymas.   
-2. Studentų skirstymas į grupes ("išlaikę" / "neišlaikę").  
-3. Rezultatų išvedimas į atskirus failus.
-4. Bendras apdorojimo laikas
+#### Failas: `studentai_1000.txt` (1 000 įrašų)
+| Konteineris | Nuskaitymas (s) | Rūšiavimas (s) | Skirstymas (s) |
+|-------------|-----------------|----------------|----------------|
+| Vector      | 0.004           | 0.001          | 0.0004         |
+| List        | 0.004           | 0.001          | 0.0004         |
+| Deque       | 0.006           | 0.002          | 0.0004         |
 
-![image](https://github.com/user-attachments/assets/d06a97df-bc31-4469-a1c2-b6db82396d8d) ![image](https://github.com/user-attachments/assets/442f1d5f-4810-4ba8-b1ca-7445d3644860) ![image](https://github.com/user-attachments/assets/f73fc2a0-1355-45b2-9b85-ba4f9f58cb4e) ![image](https://github.com/user-attachments/assets/e02a6e1f-0d3f-4ca1-9d86-355c32d9012f) ![image](https://github.com/user-attachments/assets/66b25517-20e6-4aba-8fc4-6de5afe0a6a2)
+![image](https://github.com/user-attachments/assets/df49b163-970f-418f-9bab-55774788e90d)
 
+#### Failas: `studentai_10000.txt` (10 000 įrašų)
+| Konteineris | Nuskaitymas (s) | Rūšiavimas (s) | Skirstymas (s) |
+|-------------|-----------------|----------------|----------------|
+| Vector      | 0.038           | 0.020          | 0.005          |
+| List        | 0.032           | 0.005          | 0.008          |
+| Deque       | 0.032           | 0.028          | 0.005          |
 
+![image](https://github.com/user-attachments/assets/9d4a70c9-89b1-49ac-ad60-4f2a00e68308)
 
+#### Failas: `studentai_100000.txt` (100 000 įrašų)
+| Konteineris | Nuskaitymas (s) | Rūšiavimas (s) | Skirstymas (s) |
+|-------------|-----------------|----------------|----------------|
+| Vector      | 0.316           | 0.269          | 0.039          |
+| List        | 0.347           | 0.044          | 0.055          |
+| Deque       | 0.319           | 0.339          | 0.037          |
 
+![image](https://github.com/user-attachments/assets/fe3c6219-b07d-4b98-93ea-db45a3fbb80e)
 
+#### Failas: `studentai_1000000.txt` (1 000 000 įrašų)
+| Konteineris | Nuskaitymas (s) | Rūšiavimas (s) | Skirstymas (s) |
+|-------------|-----------------|----------------|----------------|
+| Vector      | 3.217           | 3.256          | 0.479          |
+| List        | 3.263           | 0.428          | 0.425          |
+| Deque       | 3.099           | 4.048          | 0.343          |
+
+![image](https://github.com/user-attachments/assets/e076bbbf-b860-4439-adec-e1e8a07d2dc3)
+
+#### Failas: `studentai_10000000.txt` (10 000 000 įrašų)
+| Konteineris | Nuskaitymas (s) | Rūšiavimas (s) | Skirstymas (s) |
+|-------------|-----------------|----------------|----------------|
+| Vector      | 16.077          | 21.79          | 2.735          |
+| List        | 16.430          | 3.571          | 2.597          |
+| Deque       | 15.833          | 26.12          | 1.956          |
+
+![image](https://github.com/user-attachments/assets/82f0fe0b-5cf4-49b0-a5e6-d828d95752ad)
+
+---
+
+## Išvados
+
+1. **Nuskaitymas:**
+   - Greičiausiai veikia `std::vector` ir `std::deque`, nes jie yra optimizuoti atsitiktinei prieigai.
+   - `std::list` yra šiek tiek lėtesnis dėl savo dvipusio sąrašo struktūros.
+
+2. **Rūšiavimas:**
+   - `std::vector` ir `std::deque` naudoja `std::sort`, kuris yra labai efektyvus.
+   - `std::list` naudoja savo vidinį `list::sort()`, kuris yra lėtesnis, bet optimizuotas sąrašams.
+
+3. **Skirstymas:**
+   - `std::vector` ir `std::deque` vėlgi dominuoja dėl efektyvios atminties valdymo.
+   - `std::list` yra lėtesnis dėl dažnesnio atminties perskirstymo.
+
+---
