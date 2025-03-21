@@ -61,18 +61,16 @@
 
 ---
 
-## Išvados
+### 1. **Nuskaitymas**  
+- **Deque** buvo šiek tiek lėtesnis su mažais failais, bet greitesnis su 10M įrašų.  
+- **Vector** ir **List** parodė panašų našumą.  
 
-1. **Nuskaitymas:**
-   - Greičiausiai veikia `std::vector` ir `std::deque`, nes jie yra optimizuoti atsitiktinei prieigai.
-   - `std::list` yra šiek tiek lėtesnis dėl savo dvipusio sąrašo struktūros.
+### 2. **Rūšiavimas**  
+- **List** žymiai greitesnis (pvz., 10M įrašų: **3.571 s** vs **21.79 s** Vector).  
+- **Deque** lėčiausias dėl neefektyvaus `std::sort` algoritmo.  
 
-2. **Rūšiavimas:**
-   - `std::vector` ir `std::deque` naudoja `std::sort`, kuris yra labai efektyvus.
-   - `std::list` naudoja savo vidinį `list::sort()`, kuris yra lėtesnis, bet optimizuotas sąrašams.
-
-3. **Skirstymas:**
-   - `std::vector` ir `std::deque` vėlgi dominuoja dėl efektyvios atminties valdymo.
-   - `std::list` yra lėtesnis dėl dažnesnio atminties perskirstymo.
+### 3. **Skirstymas**  
+- **Deque** greičiausias (10M įrašų: **1.956 s**).  
+- **List** lėčiausias dėl atminties fragmentacijos.  
 
 ---
