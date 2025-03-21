@@ -1,4 +1,4 @@
-# Studentų duomenų apdorojimo testavimas
+# V1.0 Pradinė
 
 Ši programa testuoja trijų skirtingų konteinerių (`std::vector`, `std::list`, `std::deque`) veikimo spartą apdorojant studentų duomenis. Testavimas atliekamas su skirtingo dydžio failais, kuriuose yra nuo 1 000 iki 10 000 000 įrašų.
 
@@ -74,3 +74,12 @@
 - **List** lėčiausias dėl atminties fragmentacijos.  
 
 ---
+
+# V1.0 Finalinė
+
+#### Failas: `studentai_1000.txt` (1 000 įrašų)
+| Konteineris |   Strategija1   |  Strategija2   | Strategija3    |
+|-------------|-----------------|----------------|----------------|
+| Vector      | 0.004           | 0.001          | 0.0004         |
+| List        | 0.004           | 0.001          | 0.0004         |
+| Deque       | 0.006           | 0.002          | 0.0004         |
