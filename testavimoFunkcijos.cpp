@@ -17,7 +17,7 @@ void nuskaitytiIsFailo(Container& studentai, const std::string& failoVardas) {
         int pazymys;
         while (iss >> pazymys) s.namuDarbai.push_back(pazymys);
 
-        if (s.namuDarbai.empty()) throw std::runtime_error("Truksta pazymiu");
+        if (s.namuDarbai.empty()) throw std::runtime_error("Trūksta pažymių");
 
         s.egzaminas = s.namuDarbai.back();
         s.namuDarbai.pop_back();
@@ -57,14 +57,16 @@ void strategija2(Container& studentai, Container& vargsiai) {
     studentai.erase(it, studentai.end());
 }
 
-// ========================= 3 STRATEGIJA =========================
+// ========================= 3 STRATEGIJA (tik vektoriui) =========================
 template<typename Container>
 void strategija3(Container& studentai, Container& vargsiai) {
-    auto it = std::partition(studentai.begin(), studentai.end(), [](const Student& s) {
-        return s.galutinisBalas >= 5.0;
-    });
-    vargsiai.assign(it, studentai.end());
-    studentai.erase(it, studentai.end());
+    if constexpr (std::is_same<Container, std::vector<Student>>::value) {
+        auto it = std::partition(studentai.begin(), studentai.end(), [](const Student& s) {
+            return s.galutinisBalas >= 5.0;
+        });
+        vargsiai.assign(it, studentai.end());
+        studentai.erase(it, studentai.end());
+    }
 }
 
 // ========================= TESTAVIMO FUNKCIJA =========================
@@ -75,6 +77,7 @@ void testuotiStrategijas(const std::string& failoVardas) {
 
     Container vargsiai, kietiakai;
 
+    // 1 strategija
     auto start1 = std::chrono::high_resolution_clock::now();
     strategija1(studentai, vargsiai, kietiakai);
     auto end1 = std::chrono::high_resolution_clock::now();
@@ -83,6 +86,7 @@ void testuotiStrategijas(const std::string& failoVardas) {
     vargsiai.clear();
     nuskaitytiIsFailo(studentai, failoVardas);
 
+    // 2 strategija
     auto start2 = std::chrono::high_resolution_clock::now();
     strategija2(studentai, vargsiai);
     auto end2 = std::chrono::high_resolution_clock::now();
@@ -91,14 +95,19 @@ void testuotiStrategijas(const std::string& failoVardas) {
     vargsiai.clear();
     nuskaitytiIsFailo(studentai, failoVardas);
 
-    auto start3 = std::chrono::high_resolution_clock::now();
-    strategija3(studentai, vargsiai);
-    auto end3 = std::chrono::high_resolution_clock::now();
+    // 3 strategija (tik vektoriui)
+    std::string strategija3_laikas = "N/A";
+    if constexpr (std::is_same<Container, std::vector<Student>>::value) {
+        auto start3 = std::chrono::high_resolution_clock::now();
+        strategija3(studentai, vargsiai);
+        auto end3 = std::chrono::high_resolution_clock::now();
+        strategija3_laikas = std::to_string(std::chrono::duration<double>(end3 - start3).count()) + " s";
+    }
 
     std::cout << "\n=== " << ContainerName<Container>::name() << " ==="
               << "\n1 strategija: " << std::chrono::duration<double>(end1 - start1).count() << " s"
               << "\n2 strategija: " << std::chrono::duration<double>(end2 - start2).count() << " s"
-              << "\n3 strategija: " << std::chrono::duration<double>(end3 - start3).count() << " s\n";
+              << "\n3 strategija: " << strategija3_laikas << "\n";
 }
 
 // ========================= VISŲ KONTEINERIŲ TESTAVIMAS =========================
