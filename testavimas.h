@@ -28,11 +28,16 @@ template<typename Container>
 void rikiuotiStudentus(Container& studentai, char kriterijus);
 
 template<typename Container>
-void padalintiStudentus(const Container& studentai, Container& vargsiai, Container& kietiakai);
+void strategija1(const Container& studentai, Container& vargsiai, Container& kietiakai);
 
-// Testavimo funkcijos
 template<typename Container>
-void testuotiKonteineri(const std::string& failoVardas);
+void strategija2(Container& studentai, Container& vargsiai);
+
+template<typename Container>
+void strategija3(Container& studentai, Container& vargsiai);
+
+template<typename Container>
+void testuotiStrategijas(const std::string& failoVardas);
 
 void testuotiVisusKonteinerius(const std::string& failoVardas);
 
