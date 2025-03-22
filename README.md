@@ -135,3 +135,14 @@ Pagrindinis tikslas – **išmatuoti skirstymo operacijos našumą** priklausoma
 | Deque       | 2.2971           | 4.6221         | N/A            |
 
 ![image](https://github.com/user-attachments/assets/3ccdfa1f-7719-4bc2-b89e-a063a09c5b93)
+
+## Išvados ir optimizacijos  
+1. **Geriausias konteineris: `std::vector`**  
+   - Strategija 3 su `std::vector` yra **optimaliausia**, nes `std::partition` leidžia greitai atskirti elementus **vietoje** be papildomos atminties.  
+2. **`std::list` ir `std::deque` nėra tinkami 3 strategijai**  
+   - `std::partition` negali būti naudojamas su `list`, todėl buvo išvestas `"N/A"`.  
+   - `list::partition()` galėtų būti alternatyva, tačiau jos efektyvumas vis tiek mažesnis.  
+3. **2 strategija – geriausias pasirinkimas `list` ir `deque` konteineriams**  
+   - Ji leidžia mažinti atminties sąnaudas, bet gali būti lėtesnė dėl `erase` operacijų.  
+
+---
