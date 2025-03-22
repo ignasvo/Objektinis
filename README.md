@@ -146,3 +146,28 @@ Pagrindinis tikslas – **išmatuoti skirstymo operacijos našumą** priklausoma
    - Ji leidžia mažinti atminties sąnaudas, bet gali būti lėtesnė dėl `erase` operacijų.  
 
 ---
+
+# Studentų Skirstymo Programos Įdiegimas ir Paleidimas
+
+Ši instrukcija aprašo, kaip įdiegti ir paleisti programą naudojant CMake visose operacinėse sistemose (Windows, Linux, macOS).
+
+## Reikalavimai
+Prieš pradedant, įsitikinkite, kad jūsų sistemoje įdiegta:
+-  **CMake**
+-  **C++ kompiliatorius**:
+  - Windows: MinGW arba MSVC
+  - Linux/macOS: GCC arba Clang
+
+## Programos Įdiegimas
+**Windows / Linux / macOS**  
+Atidarykite terminalą arba PowerShell, eikite į projekto aplanką ir paleiskite šias komandas:
+
+mkdir build  
+cd build  
+cmake .. -G "MinGW Makefiles"  
+mingw32-make  
+
+## Programos paleidimas
+Norint paleisti programą, įsitikinkite, kad duomenų failai (`studentai_1000.txt`, `studentai_10000.txt` ir kt.) yra pagrindiniame projekto aplanke!
+Paleiskite šią komandą:  
+./studentu_skirstymas studentai_1000.txt
